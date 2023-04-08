@@ -1,0 +1,76 @@
+--パラメータ
+--track0:細かさ,1,128,1
+--track1:勢い,1,500,1
+n=4
+n=obj.track0
+w=obj.w/2
+h=obj.h/2
+x0=w
+x1=-w
+u0=0
+u1=w*2
+yza=obj.h
+wza=obj.w
+o_y=obj.y   --  -   -  y fix to screen org.--  
+pi4=0.785398163
+--== main loop ==-- 
+for i=0,n-1 do
+  abs_y0=o_y-(h/1)+obj.h/n*i   -- =
+  abs_y1=o_y-(h/1)+obj.h/n*(i+1)
+  y0=-h+obj.h/n*i
+  y1=-h+obj.h/n*(i+1)
+  -- conv to deg of Sphea
+  crvture=2.5
+  ldeg_y0=math.abs(abs_y0 / obj.screen_h*(1.57*crvture))
+  ldeg_y1=math.abs(abs_y1 / obj.screen_h*(1.57*crvture))
+  v0=obj.h/n*i   --  -  -  -  source position
+  v1=obj.h/n*(i+1)
+  if (ldeg_y0 >1.57) then                     -- limit
+    ldeg_y0=1.57
+  end
+  if (ldeg_y1 >1.57) then
+    ldeg_y1=1.57
+  end
+  x0_ratio=math.abs(math.log(math.tan(pi4 + ldeg_y0/2)))
+  if (x0_ratio >5) then
+    x0_ratio=5.00
+  elseif (x0_ratio <1) then
+    x0_ratio=1.00
+  end
+  x1_ratio=math.abs(math.log(math.tan(pi4 + ldeg_y1/2)))
+  if (x1_ratio >5) then
+    x1_ratio=5.00
+  elseif (x1_ratio <1) then
+    x1_ratio=1.00
+  end
+--x0_ratio=math.log(math.tan(ldeg_y0) +(math.tan(ldeg_y0)^2 + 1)^0.5)
+--x1_ratio=math.log(math.tan(ldeg_y1) +(math.tan(ldeg_y1)^2 + 1)^0.5)
+  x0=x0_ratio * w
+  x1=x0_ratio * -w
+  x2=x1_ratio * w
+  x3=x1_ratio * -w
+  
+  if (i==0) then
+    vr0=ldeg_y0
+    vr1=x0
+    vr2=abs_y0
+    vr3=x0_ratio
+    vr41=ldeg_y1
+    vr4=x1
+    vr5=abs_y1
+    vr6=x1_ratio
+    vr7=x2
+    vr8=x3
+    vr9=abs_y1
+    vrA=x1_ratio
+  elseif (i==1) then
+  elseif (i==2) then
+  elseif (i==3) then
+  end
+  alpha=1/(i+1)
+  vr_o=obj.h
+  obj.drawpoly( x1, y0,0,  x0,y0,0,  x2,y1+00,0, x3,y1+000,0, u0,v0, u1,v0, u1,v1, u0,v1)
+  -- 座標が狂ってる感じがあるがとりあえずこれでいいや
+--   obj.drawpoly(x0,abs_y0,0,  x1,abs_y0+h*0,0,  x1,abs_y1,0,  x0,abs_y1,0,  u0,v0,u1,v0, u1,v1,u0,v1 ,alpha)  
+
+end
